@@ -1,3 +1,32 @@
+/*
+using System;
+using Android.App;
+using Android.Content;
+using Android.Content.PM;
+using Android.Runtime;
+using Android.Views;
+using Android.Widget;
+using Android.OS;
+
+namespace BotBoardApp.Droid
+{
+	[Activity (Label = "BotBoardApp.Droid", 
+				Icon = "@drawable/icon", 
+				MainLauncher = true, 
+				ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
+	
+	public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsApplicationActivity
+	{
+		protected override void OnCreate (Bundle bundle)
+		{
+			Xamarin.Insights.Initialize (global::BotBoardApp.Droid.XamarinInsights.ApiKey, this);
+			base.OnCreate (bundle);
+			global::Xamarin.Forms.Forms.Init (this, bundle);
+			LoadApplication (new App ());
+		}
+	}
+}
+*/
 using System;
 using System.Threading.Tasks;
 using Android.App;
@@ -8,26 +37,32 @@ using Android.Views;
 using Android.Widget;
 using Auth0.SDK;
 using Newtonsoft.Json.Linq;
+using Android.Content.PM;
 
-namespace Auth0Client.Android.Sample
+namespace BotBoardApp.Droid
 {
-	[Activity (Label = "Auth0Client - Android Sample", MainLauncher = true)]
-	public class MainActivity : Activity
+	[Activity (Label = "BotBoardApp.Droid", 
+		Icon = "@drawable/icon", 
+		MainLauncher = true, 
+		ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
+
+	public class LoginActivity : Activity
 	{
 		// ********** 
 		// IMPORTANT: these are demo credentials, and the settings will be reset periodically 
 		//            You can obtain your own at https://auth0.com when creating a Xamarin App in the dashboard
 		// ***********
-		private Auth0.SDK.Auth0Client client = new Auth0.SDK.Auth0Client (
-			"contoso.auth0.com",
-			"HmqDkk9qtDgxsiSKpLKzc51xD75hgiRW");
-			
+		private Auth0Client client = new Auth0Client (
+			"boiling-heat-9947.firebaseio.com/",
+			//"HmqDkk9qtDgxsiSKpLKzc51xD75hgiRW");
+			"BBwlPFTEMISGXNTvQz5nheil1SC3PgyPqIWxEvIV");
+
 		private ProgressDialog progressDialog;
 
 		protected override void OnCreate (Bundle bundle)
 		{
 			base.OnCreate (bundle);
-			this.SetContentView(Resource.Layout.Main);
+			this.SetContentView(Resource.Layout.LoginActivity);
 
 			this.progressDialog = new ProgressDialog (this);
 			this.progressDialog.SetMessage ("loading...");
@@ -95,7 +130,8 @@ namespace Auth0Client.Android.Sample
 				// This uses a specific connection (named sql-azure-database in Auth0 dashboard) which supports username/password authentication
 				try 
 				{
-					var user = await this.client.LoginAsync ("sql-azure-database", userName, password);
+					//var user = await this.client.LoginAsync ("sql-azure-database", userName, password);
+					var user = await this.client.LoginAsync ("boiling-heat-9947.firebaseio.com", userName, password);
 					this.ShowResult(user);
 				}
 				catch (AggregateException e){
@@ -174,10 +210,10 @@ namespace Auth0Client.Android.Sample
 			truncatedId = truncatedId.Insert (0, "...");
 
 			this.FindViewById<TextView>(Resource.Id.txtResult).Text = string.Format (
-					"Id: {0}\r\n\r\nProfile: {1}\r\n\r\nRefresh Token:\r\n{2}", 
-					truncatedId, 
-					profile, 
-					refreshToken);
+				"Id: {0}\r\n\r\nProfile: {1}\r\n\r\nRefresh Token:\r\n{2}", 
+				truncatedId, 
+				profile, 
+				refreshToken);
 		}
 	}
 }

@@ -31,6 +31,6 @@
 	<key>CFBundleVersion</key>
 	<string>1</string>
 	<key>UIMainNibFile</key>
-	<string>LaunchScreen</string>
+	<string>LoginViewController</string>
 </dict>
 </plist>
